@@ -8,27 +8,46 @@
 </head>
 
 <body>
+    <h1>Legally Distinct Etchin' and Sketchin' Web App</h1>
+    <div class="buttons">
+        <button type="button" id="box-resize">Resize Grid</button>
+        <button type="button" id="box-reset">Reset</button>
+    </div>
+    
     <div class="container">
-
+        <!-- Square container is filled with Javascript, with side length equal to user input -->
     </div>
     <script>
-        //const container = document.querySelector('.container')
         const container = document.querySelector('.container')
-        let scale = 16
         container.style.display = "grid"
-        container.style.gridTemplateColumns = "repeat(" + scale + ", 1fr)"
-        container.style.gridTemplateRows = "repeat(" + scale + ", 1fr)"
+        let colorMode = false
 
-        let count = 0
-        for(i = 0; i < 256; i++){
-            let box = document.createElement('div')
-            box.className = "box"
-            box.id = count
-            box.addEventListener('mouseover', () => box.style.backgroundColor = "black")
-            box.textContent = count++
-            container.appendChild(box)           
+        buildGrid(16)
+        document.getElementById('box-resize').addEventListener('click', boxResize)    
+        document.getElementById('box-reset').addEventListener('click', boxReset) 
+    
+        function buildGrid(sideSize){
+            gridSize = sideSize * sideSize
+            container.style.gridTemplateColumns = "repeat(" + sideSize + ", minmax(1px, 1fr))"
+            container.style.gridTemplateRows = "repeat(" + sideSize + ", minmax(1px, 1fr))"
+
+            for(i = 0; i < gridSize; i++){
+                let box = document.createElement('div')
+                box.className = "box"
+                box.addEventListener('mouseover', () => box.style.backgroundColor = "black")
+                container.appendChild(box)           
+            }
         }
 
+        function boxResize() {
+            document.querySelectorAll('.box').forEach(box => box.remove())
+            sideSize = prompt("Enter desired length of grid size. Default is 16 (256 squares total)");
+            buildGrid(sideSize)
+        }
+
+        function boxReset() {
+            document.querySelectorAll('.box').forEach(box => box.style.backgroundColor = "white")
+        }
     </script>
 </body>
 
