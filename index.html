@@ -10,8 +10,10 @@
 <body>
     <h1>Legally Distinct Etchin' and Sketchin' Web App</h1>
     <div class="buttons">
-        <button type="button" id="box-resize">Resize Grid</button>
-        <button type="button" id="box-reset">Reset</button>
+        <button type="button" id="btn-resize">Resize Grid</button>
+        <button type="button" id="btn-reset">Reset</button>
+        <p id="btn-color-text">Color Mode: </p>
+        <button type="button" id="btn-color">On</button>
     </div>
     
     <div class="container">
@@ -23,8 +25,9 @@
         let colorMode = false
 
         buildGrid(16)
-        document.getElementById('box-resize').addEventListener('click', boxResize)    
-        document.getElementById('box-reset').addEventListener('click', boxReset) 
+        document.getElementById('btn-resize').addEventListener('click', boxResize)    
+        document.getElementById('btn-reset').addEventListener('click', boxReset) 
+        document.getElementById('btn-color').addEventListener('click', () => colorMode = !colorMode)
     
         function buildGrid(sideSize){
             gridSize = sideSize * sideSize
@@ -34,19 +37,30 @@
             for(i = 0; i < gridSize; i++){
                 let box = document.createElement('div')
                 box.className = "box"
-                box.addEventListener('mouseover', () => box.style.backgroundColor = "black")
+                box.addEventListener('mouseover', boxColor)
                 container.appendChild(box)           
             }
         }
 
         function boxResize() {
             document.querySelectorAll('.box').forEach(box => box.remove())
-            sideSize = prompt("Enter desired length of grid size. Default is 16 (256 squares total)");
+            sideSize = prompt("Enter new length for grid side. Default is 16 (256 squares total)");
             buildGrid(sideSize)
         }
 
         function boxReset() {
             document.querySelectorAll('.box').forEach(box => box.style.backgroundColor = "white")
+        }
+
+        function boxColor() {
+            if(colorMode === false){
+                this.style.backgroundColor = "black"
+            } else {
+                var r = Math.floor(Math.random()*256);          // Random between 0-255
+                var g = Math.floor(Math.random()*256);          // Random between 0-255
+                var b = Math.floor(Math.random()*256);          // Random between 0-255
+                this.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')'
+            }
         }
     </script>
 </body>
